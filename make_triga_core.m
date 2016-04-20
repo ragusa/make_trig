@@ -10,12 +10,17 @@ file_handle_surf=fopen('surf.txt','w+');
 % 1/2: z min/max
 % 3/4: x min/max
 % 5/6: y min/max
-fprintf(file_handle_surf,'%5d  PZ %g \n',1,0.);
-fprintf(file_handle_surf,'%5d  PZ %g \n',2,38.1);
-fprintf(file_handle_surf,'%5d  PX %g \n',3,0.);
-fprintf(file_handle_surf,'%5d  PX %g \n',4,90); % CHECK
-fprintf(file_handle_surf,'%5d  PY %g \n',5,0.);
-fprintf(file_handle_surf,'%5d  PY %g \n',6,60); % CHECK
+% 7/8: z intermediate boundaries 
+% 9  : z origin
+fprintf(file_handle_surf,'%5d  PZ %g \n',1,-40.0);
+fprintf(file_handle_surf,'%5d  PZ %g \n',2,40.0);
+fprintf(file_handle_surf,'%5d  PX %g \n',3,-36.45027);
+fprintf(file_handle_surf,'%5d  PX %g \n',4,36.45027); 
+fprintf(file_handle_surf,'%5d  PY %g \n',5,-26.98115);
+fprintf(file_handle_surf,'%5d  PY %g \n',6,19.27225); 
+fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78); 
+fprintf(file_handle_surf,'%5d  PZ %g \n',8,17.78);
+fprintf(file_handle_surf,'%5d  PZ %g \n',9,0); 
 
 pitch_x=10;
 pitch_y=10;
@@ -26,20 +31,20 @@ cell_ID=20;
 cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-x_center=5; y_center=5; % CHECK
-max_row=3;
-max_col=2;
-for i=1:max_row
-    for j=1:max_col
-        bundle_type{i,j}='regular_fuel_bundle';
+x_center=4.5; y_center=3.85445; 
+max_row=6;
+max_col=9;
+for i=1:max_col
+    for j=1:max_row
+        bundle_type{i,j}='fuel_bundle';
     end
 end
 
-for i=1:max_row
-    for j=1:max_col
+for i=1:max_col
+%     for j=1:max_row
         [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j}, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-    end
 end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -50,7 +55,7 @@ cell_ID_end=cell_ID;
 % finish box
 cell_ID=cell_ID+1; % increment cell ID
 water_mat_ID = 4;
-water_density = -1;
+water_density = -0.10004;
 fprintf(file_handle_cell,'%5d  %g %g %d %d %d  %d %d %d\n',cell_ID,water_mat_ID,water_density,1,-2,3,-4,5,-6);
 k=0;
 for icell=cell_ID_start+1:cell_ID_end
@@ -79,5 +84,5 @@ fprintf(file_handle_surf,'\n');
 fclose(file_handle_cell);
 fclose(file_handle_surf);
 
-system('copy cell.txt+surf.txt+data.txt big.inp')
+system('copy cell.txt+surf.txt+data.txt input.inp')
 
