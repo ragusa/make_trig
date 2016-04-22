@@ -28,7 +28,7 @@ cell_ID=20;
 cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-x_center=4.5; y_center=3.85445; 
+x_center=4.5; y_center=3.85445; % WHAT IS THIS?
 max_row=9;
 max_col=6;
 i=1:max_row
@@ -61,12 +61,25 @@ j=1:max_col
 %         end
 %     end
 % end
-
-f:=bundle_type -> piecewize([{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'shim_bundle'],[{i,j}=={3,6},'regulating_bundle'],[{i,j}=={3,6},'transient_bundle'],[{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'water holes']
+F='fuel_bundle';
+layout = [ ...
+    F F F F F F F F F;... 
+    F F F F F F F F F;...
+    F F F F F F F F F;... 
+    F F F F F F F F F;...
+    F F F F F F F F F;... 
+    F F F F F F F F F ]';
+S='shim_bundle';
+R='regulating_bundle';
+T='transient_bundle';
+W='water holes';
+f:=bundle_type -> piecewize([{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'shim_bundle'],[{i,j}=={3,6},'regulating_bundle'],[{i,j}=={3,6},
+    'transient_bundle'],[{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'water holes']
 
 for i=1:max_row
     for j=1:max_col
-        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j}, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j}, ...
+            cell_ID, surf_ID, file_handle_cell, file_handle_surf);
     end
 end
 
