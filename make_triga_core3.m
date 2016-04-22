@@ -6,20 +6,20 @@ file_handle_surf=fopen('surf.txt','w+');
 
 % file_handle_data=fopen('data.txt','r');
 
-% create the surfaces to define the core 
+% create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  PZ %g \n',1,-40.0);
 fprintf(file_handle_surf,'%5d  PZ %g \n',2,40.0);
 fprintf(file_handle_surf,'%5d  PX %g \n',3,0);
-fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054); 
+fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054);
 fprintf(file_handle_surf,'%5d  PY %g \n',5,0);
-fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534); 
+fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534);
 % define plans PZ =0 and intermediates plans PZ to create pins
-fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78); 
+fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78);
 fprintf(file_handle_surf,'%5d  PZ %g \n',8,17.78);
-fprintf(file_handle_surf,'%5d  PZ %g \n',9,0); 
+fprintf(file_handle_surf,'%5d  PZ %g \n',9,0);
 
 % given for the definition of the center of the bundle
-pitch_x = 72.90054/9; 
+pitch_x = 72.90054/9;
 pitch_y = 46.2534/6;
 
 % starting IDs for automatically generated ID's
@@ -28,54 +28,67 @@ cell_ID=20;
 cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-x_center=4.5; y_center=3.85445; % WHAT IS THIS?
+% % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
 max_row=9;
 max_col=6;
-i=1:max_row
-j=1:max_col
-    %coordonates of the shim bundle
-    V1=[{4,3} {4,5} {6,3} {6,5}]
-    % coordonates of the regulating bundle
-    V2=[{3,6}]
-    % coordonates of the transient bundle
-    V3=[{5,4}]
-    % coordonates of the water holes
-    V4=[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}]
-    
-% for i=1:max_row
-%     for j=1:max_col
-%         if{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}]
-%             bundle_type{i,j}='shim_bundle'; 
-%         end
-%         if {i,j}=={3,6}
-%             bundle_type{i,j}='regulating_bundle';
-%         end
-%         if {i,j}=={3,6}
-%             bundle_type{i,j}='transient_bundle';
-%         end
-%         if {i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}]
-%             bundle_type{i,j}='water holes';
-%         end
-%         if {i,j}~=V1 & {i,j}~=V2 & {i,j}~=V3 & {i,j}~=V4
-%             bundle_type='fuel_bundle';
-%         end
-%     end
-% end
-F='fuel_bundle';
-layout = [ ...
-    F F F F F F F F F;... 
-    F F F F F F F F F;...
-    F F F F F F F F F;... 
-    F F F F F F F F F;...
-    F F F F F F F F F;... 
-    F F F F F F F F F ]';
-S='shim_bundle';
-R='regulating_bundle';
-T='transient_bundle';
-W='water holes';
-f:=bundle_type -> piecewize([{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'shim_bundle'],[{i,j}=={3,6},'regulating_bundle'],[{i,j}=={3,6},
-    'transient_bundle'],[{i,j}==[{1,1} {2,3} {2,5} {3,1} {3,4} {5,1} {7,1} {7,4} {9,1}],'water holes']
 
+% fill bundle layout with fuel bundle
+F='fuel_bundle';
+F='empty_bundle';
+for i=1:max_row
+    for j=1:max_col
+        bundle_type{i,j}=F;
+    end
+end
+
+bundle_type{3,3}='fuel_bundle';
+bundle_type{2,3}='shim_bundle';
+bundle_type{2,2}='water_regulating_bundle';
+bundle_type{1,2}='transient_bundle';
+bundle_type{1,1}='water_holes';
+% % % put shim_bundle
+% % index_i= [ 4 4 6 6 ];
+% % index_j= [ 3 5 3 5 ];
+% % for ii=1:length(index_i)
+% %     i=index_i(ii);
+% %     for jj=1:length(index_j)
+% %         j=index_j(jj);
+% %         bundle_type{i,j}='shim_bundle';
+% %     end
+% % end
+% % % put water_regulating_bundle
+% % index_i= [ 3 ];
+% % index_j= [ 6 ];
+% % for ii=1:length(index_i)
+% %     i=index_i(ii);
+% %     for jj=1:length(index_j)
+% %         j=index_j(jj);
+% %         bundle_type{i,j}='water_regulating_bundle';
+% %     end
+% % end
+% % % put transient_bundle % MAKES NO SENSE THAT (3,6) APPLIES TO BOTH
+% % %                        regulating_bundle and transient_bundle
+% % index_i= [ 5 ];
+% % index_j= [ 4 ];
+% % for ii=1:length(index_i)
+% %     i=index_i(ii);
+% %     for jj=1:length(index_j)
+% %         j=index_j(jj);
+% %         bundle_type{i,j}='transient_bundle';
+% %     end
+% % end
+% % % % % put water_holes
+% % index_i= [ 1 2 2 3 3 5 7 7 9 ];
+% % index_j= [ 1 3 5 1 4 1 1 4 1 ];
+% % for ii=1:length(index_i)
+% %     i=index_i(ii);
+% %     for jj=1:length(index_j)
+% %         j=index_j(jj);
+% %         bundle_type{i,j}='water_holes';
+% %     end
+% % end
+
+% create each bundle
 for i=1:max_row
     for j=1:max_col
         [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j}, ...
@@ -118,4 +131,4 @@ fprintf(file_handle_surf,'\n');
 fclose(file_handle_cell);
 fclose(file_handle_surf);
 
-system('copy cell.txt+surf.txt+data.txt input.inp')
+system('copy cell.txt+surf.txt+data.txt input.inp');
