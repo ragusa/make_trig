@@ -6,19 +6,22 @@ file_handle_surf=fopen('surf.txt','w+');
 
 % file_handle_data=fopen('data.txt','r');
 
-% create x/y/z min/max surfaces
-% 1/2: z min/max
-% 3/4: x min/max
-% 5/6: y min/max
-fprintf(file_handle_surf,'%5d  PZ %g \n',1,0.);
-fprintf(file_handle_surf,'%5d  PZ %g \n',2,38.1);
-fprintf(file_handle_surf,'%5d  PX %g \n',3,0.);
-fprintf(file_handle_surf,'%5d  PX %g \n',4,90); % CHECK
-fprintf(file_handle_surf,'%5d  PY %g \n',5,0.);
-fprintf(file_handle_surf,'%5d  PY %g \n',6,60); % CHECK
+water_thickness=10;
+% create the surfaces to define the core
+fprintf(file_handle_surf,'%5d  PZ %g \n',1,-40.0);
+fprintf(file_handle_surf,'%5d  PZ %g \n',2, 40.0);
+fprintf(file_handle_surf,'%5d  PX %g \n',3,0       -water_thickness);
+fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054+water_thickness);
+fprintf(file_handle_surf,'%5d  PY %g \n',5,0      -water_thickness);
+fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534+water_thickness);
+% define plans PZ =0 and intermediates plans PZ to create pins
+fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78);
+fprintf(file_handle_surf,'%5d  PZ %g \n',8,17.78);
+fprintf(file_handle_surf,'%5d  PZ %g \n',9,0);
 
-pitch_x=10;
-pitch_y=10;
+% given for the definition of the center of the bundle
+pitch_x = 72.90054/9;
+pitch_y = 46.2534/6;
 
 % starting IDs for automatically generated ID's
 surf_ID=20;
@@ -26,31 +29,135 @@ cell_ID=20;
 cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-x_center=5; y_center=5; % CHECK
-max_row=3;
-max_col=2;
+% % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
+max_row=9;
+max_col=6;
+
+% fill bundle layout with fuel bundle
+F='fuel_bundle';
+% F='empty_bundle';
 for i=1:max_row
     for j=1:max_col
-        bundle_type{i,j}='regular_fuel_bundle';
+        bundle_type{i,j}=F;
     end
 end
 
+% % bundle_type{3,3}='fuel_bundle';
+% % bundle_type{2,3}='shim_bundle';
+% % bundle_type{2,2}='water_regulating_bundle';
+% % bundle_type{1,2}='transient_bundle';
+% % bundle_type{1,1}='water_holes';
+
+% % % put shim_bundle
+ index_i= [ 4 4 6 6 ];
+ index_j= [ 3 5 3 5 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='shim_bundle';
+     end
+ end
+ % % % put water_regulating_bundle
+ index_i= [ 3 ];
+ index_j= [ 6 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='water_regulating_bundle';
+     end
+ end
+ % % % put transient_bundle 
+ index_i= [ 5 ];
+ index_j= [ 4 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='transient_bundle';
+     end
+ end
+ % % % put water_holes
+ index_i= [ 1 2 2 3 3 5 7 7 9 ];
+ index_j= [ 1 3 5 1 4 1 1 4 1 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='water_holes';
+     end
+ end
+
+ % % % put reflector_block 
+ index_i= [ 1 1 1 1 2 8 8 8 8 9 9 ];
+ index_j= [ 3 4 5 6 2 2 4 5 6 2 6 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='reflector_block';
+     end
+ end
+ 
+ % % % put detectors 
+ index_i= [ 9 9 9 ];
+ index_j= [ 3 4 5 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='detector_block';
+     end
+ end
+ 
+  % % % put the neutron sourve 
+ index_i= [ 8 ];
+ index_j= [ 3 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='source_block';
+     end
+ end
+ 
+   % % % put the large and small pneumatics 
+   % put the large pneumatic
+ index_i= [ 1 ];
+ index_j= [ 2 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='Lpneumatic_block';
+     end
+ end
+  % put the small pneumatic
+ index_i= [ 2 ];
+ index_j= [ 4 ];
+ for ii=1:length(index_i)
+     i=index_i(ii);
+     for jj=1:length(index_j)
+         j=index_j(jj);
+         bundle_type{i,j}='Spneumatic_block';
+     end
+ end
+ 
+% create each bundle
 for i=1:max_row
     for j=1:max_col
-        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j}, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j},cell_ID, surf_ID, file_handle_cell, file_handle_surf);
     end
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 % get last cell ID used
 cell_ID_end=cell_ID;
 
 % finish box
 cell_ID=cell_ID+1; % increment cell ID
-water_mat_ID = 4;
-water_density = -1;
+water_mat_ID = 5;
+water_density = -0.10004;
 fprintf(file_handle_cell,'%5d  %g %g %d %d %d  %d %d %d\n',cell_ID,water_mat_ID,water_density,1,-2,3,-4,5,-6);
 k=0;
 for icell=cell_ID_start+1:cell_ID_end
@@ -79,5 +186,4 @@ fprintf(file_handle_surf,'\n');
 fclose(file_handle_cell);
 fclose(file_handle_surf);
 
-system('copy cell.txt+surf.txt+data.txt big.inp')
-
+system('copy cell.txt+surf.txt+data.txt input.inp');
