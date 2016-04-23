@@ -45,10 +45,13 @@ Thumbs.db
 *.blg
 *.asv
 *.txt
+!data.txt
 *.inp
 *.exe
 fort*
 out*
 *.sav
 inp
+input.txt
+input.inp
 *crash*
