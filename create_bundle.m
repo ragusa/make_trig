@@ -108,8 +108,8 @@ switch bundle_type
     case 'water_holes'
         pin_type='water';
         % hole
-        x_center = 4.5;  % WHY IS THIS NOT OFFSET BY x_bundle_center ???
-        y_center = 3.85445;
+        x_center = x_bundle_center;
+        y_center = y_bundle_center;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
         %     case 'reflector_block'

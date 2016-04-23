@@ -6,13 +6,14 @@ file_handle_surf=fopen('surf.txt','w+');
 
 % file_handle_data=fopen('data.txt','r');
 
+water_thickness=10;
 % create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  PZ %g \n',1,-40.0);
-fprintf(file_handle_surf,'%5d  PZ %g \n',2,40.0);
-fprintf(file_handle_surf,'%5d  PX %g \n',3,0);
-fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054);
-fprintf(file_handle_surf,'%5d  PY %g \n',5,0);
-fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534);
+fprintf(file_handle_surf,'%5d  PZ %g \n',2, 40.0);
+fprintf(file_handle_surf,'%5d  PX %g \n',3,0       -water_thickness);
+fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054+water_thickness);
+fprintf(file_handle_surf,'%5d  PY %g \n',5,0      -water_thickness);
+fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534+water_thickness);
 % define plans PZ =0 and intermediates plans PZ to create pins
 fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78);
 fprintf(file_handle_surf,'%5d  PZ %g \n',8,17.78);
@@ -41,52 +42,52 @@ for i=1:max_row
     end
 end
 
-bundle_type{3,3}='fuel_bundle';
-bundle_type{2,3}='shim_bundle';
-bundle_type{2,2}='water_regulating_bundle';
-bundle_type{1,2}='transient_bundle';
-bundle_type{1,1}='water_holes';
-% % % put shim_bundle
-% % index_i= [ 4 4 6 6 ];
-% % index_j= [ 3 5 3 5 ];
-% % for ii=1:length(index_i)
-% %     i=index_i(ii);
-% %     for jj=1:length(index_j)
-% %         j=index_j(jj);
-% %         bundle_type{i,j}='shim_bundle';
-% %     end
-% % end
-% % % put water_regulating_bundle
-% % index_i= [ 3 ];
-% % index_j= [ 6 ];
-% % for ii=1:length(index_i)
-% %     i=index_i(ii);
-% %     for jj=1:length(index_j)
-% %         j=index_j(jj);
-% %         bundle_type{i,j}='water_regulating_bundle';
-% %     end
-% % end
-% % % put transient_bundle % MAKES NO SENSE THAT (3,6) APPLIES TO BOTH
-% % %                        regulating_bundle and transient_bundle
-% % index_i= [ 5 ];
-% % index_j= [ 4 ];
-% % for ii=1:length(index_i)
-% %     i=index_i(ii);
-% %     for jj=1:length(index_j)
-% %         j=index_j(jj);
-% %         bundle_type{i,j}='transient_bundle';
-% %     end
-% % end
-% % % % % put water_holes
-% % index_i= [ 1 2 2 3 3 5 7 7 9 ];
-% % index_j= [ 1 3 5 1 4 1 1 4 1 ];
-% % for ii=1:length(index_i)
-% %     i=index_i(ii);
-% %     for jj=1:length(index_j)
-% %         j=index_j(jj);
-% %         bundle_type{i,j}='water_holes';
-% %     end
-% % end
+% bundle_type{3,3}='fuel_bundle';
+% bundle_type{2,3}='shim_bundle';
+% bundle_type{2,2}='water_regulating_bundle';
+% bundle_type{1,2}='transient_bundle';
+% bundle_type{1,1}='water_holes';
+% put shim_bundle
+index_i= [ 4 4 6 6 ];
+index_j= [ 3 5 3 5 ];
+for ii=1:length(index_i)
+    i=index_i(ii);
+    for jj=1:length(index_j)
+        j=index_j(jj);
+        bundle_type{i,j}='shim_bundle';
+    end
+end
+% put water_regulating_bundle
+index_i= [ 3 ];
+index_j= [ 6 ];
+for ii=1:length(index_i)
+    i=index_i(ii);
+    for jj=1:length(index_j)
+        j=index_j(jj);
+        bundle_type{i,j}='water_regulating_bundle';
+    end
+end
+% put transient_bundle % MAKES NO SENSE THAT (3,6) APPLIES TO BOTH
+%                        regulating_bundle and transient_bundle
+index_i= [ 5 ];
+index_j= [ 4 ];
+for ii=1:length(index_i)
+    i=index_i(ii);
+    for jj=1:length(index_j)
+        j=index_j(jj);
+        bundle_type{i,j}='transient_bundle';
+    end
+end
+% % % put water_holes
+index_i= [ 1 2 2 3 3 5 7 7 9 ];
+index_j= [ 1 3 5 1 4 1 1 4 1 ];
+for ii=1:length(index_i)
+    i=index_i(ii);
+    for jj=1:length(index_j)
+        j=index_j(jj);
+        bundle_type{i,j}='water_holes';
+    end
+end
 
 % create each bundle
 for i=1:max_row
