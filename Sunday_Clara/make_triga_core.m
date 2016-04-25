@@ -6,7 +6,7 @@ file_handle_surf=fopen('surf.txt','w+');
 
 % file_handle_data=fopen('data.txt','r');
 
-water_thickness=10;
+water_thickness=10;  %CHECK
 % create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  PZ %g \n',1,-40.0);
 fprintf(file_handle_surf,'%5d  PZ %g \n',2, 40.0);
@@ -18,6 +18,7 @@ fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534+water_thickness);
 fprintf(file_handle_surf,'%5d  PZ %g \n',7,-17.78);
 fprintf(file_handle_surf,'%5d  PZ %g \n',8,17.78);
 fprintf(file_handle_surf,'%5d  PZ %g \n',9,0);
+fprintf(file_handle_surf,'%5d  PZ %g \n',10,-0.4); %CHECK
 
 % given for the definition of the center of the bundle
 pitch_x = 72.90054/9;
@@ -34,131 +35,146 @@ max_row=9;
 max_col=6;
 
 % fill bundle layout with fuel bundle
-% F='fuel_bundle';
-% F='empty_bundle';
-for i=1:max_row
-    for j=1:max_col
+debug_viz=true;
+if debug_viz
+    F='empty_bundle';
+    for i=1:max_row
+        for j=1:max_col
+            bundle_type{i,j}=F;
+        end
+    end
+    
+    bundle_type{1,1}='water_holes';
+    bundle_type{1,2}='transient_bundle';
+    bundle_type{1,3}='reflector_block';
+    bundle_type{2,1}='detector_block';
+    bundle_type{2,2}='source_block';
+    bundle_type{2,3}='Lpneumatic_block';
+    bundle_type{3,1}='Spneumatic_block';
+    bundle_type{3,2}='shim_bundle';
+    bundle_type{3,3}='water_regulating_bundle';
+    bundle_type{4,1}='fuel_bundle';
 
-
-% % bundle_type{3,3}='fuel_bundle';
-% % bundle_type{2,3}='shim_bundle';
-% % bundle_type{2,2}='water_regulating_bundle';
-% % bundle_type{1,2}='transient_bundle';
-% % bundle_type{1,1}='water_holes';
-
-% % % put fuel_bundle
- index_i= [ 2 3 3 3 3 4 4 4 5 5 5 5 5 6 6 6 7 7 7 7 ];
- index_j= [ 6 2 3 5 6 2 4 6 2 3 5 6 2 4 6 2 3 5 5 6 ];
-         for ii=1:length(index_i)
-             I=index_i(ii);
-             for jj=1:length(index_j)
-                 J=index_j(jj);
-                 bundle_type{I,J}='fuel_bundle';
-             end
-         end
-
-        % % % put shim_bundle
-         index_i= [ 4 4 6 6 ];
-         index_j= [ 3 5 3 5 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='shim_bundle';
-             end
-         end
-         % % % put water_regulating_bundle
-         index_i= [ 3 ];
-         index_j= [ 6 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='water_regulating_bundle';
-             end
-         end
-         % % % put transient_bundle 
-         index_i= [ 5 ];
-         index_j= [ 4 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='transient_bundle';
-             end
-         end
-         % % % put water_holes
-         index_i= [ 1 2 2 3 3 5 7 7 9 ];
-         index_j= [ 1 3 5 1 4 1 1 4 1 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='water_holes';
-             end
-         end
-
-         % % % put reflector_block 
-         index_i= [ 1 1 1 1 2 8 8 8 8 9 9 ];
-         index_j= [ 3 4 5 6 2 2 4 5 6 2 6 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='reflector_block';
-             end
-         end
-
-         % % % put detectors 
-         index_i= [ 9 9 9 ];
-         index_j= [ 3 4 5 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='detector_block';
-             end
-         end
-
-          % % % put the neutron sourve 
-         index_i= [ 8 ];
-         index_j= [ 3 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='source_block';
-             end
-         end
-
-           % % % put the large and small pneumatics 
-           % put the large pneumatic
-         index_i= [ 1 ];
-         index_j= [ 2 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='Lpneumatic_block';
-             end
-         end
-          % put the small pneumatic
-         index_i= [ 2 ];
-         index_j= [ 4 ];
-         for ii=1:length(index_i)
-             i=index_i(ii);
-             for jj=1:length(index_j)
-                 j=index_j(jj);
-                 bundle_type{i,j}='Spneumatic_block';
-             end
-         end
+else
+    F='fuel_bundle';
+    for i=1:max_row
+        for j=1:max_col
+            bundle_type{i,j}=F;
+        end
+    end
+    
+    
+    % % % put nothing
+    index_i= [ 4 6 8 ];
+    index_j= [ 1 1 1 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='empty_bundle';
+        end
+    end
+    % % % put shim_bundle
+    index_i= [ 4 4 6 6 ];
+    index_j= [ 3 5 3 5 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='shim_bundle';
+        end
+    end
+    % % % put water_regulating_bundle
+    index_i= [ 3 ];
+    index_j= [ 6 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='water_regulating_bundle';
+        end
+    end
+    % % % put transient_bundle
+    index_i= [ 5 ];
+    index_j= [ 4 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='transient_bundle';
+        end
+    end
+    % % % put water_holes
+    index_i= [ 1 2 2 3 3 5 7 7 9 ];
+    index_j= [ 1 3 5 1 4 1 1 4 1 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='water_holes';
+        end
+    end
+    
+    % % % put reflector_block
+    index_i= [ 1 1 1 1 2 8 8 8 8 9 9 ];
+    index_j= [ 3 4 5 6 2 2 4 5 6 2 6 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='reflector_block';
+        end
+    end
+    
+    % % % put detectors
+    index_i= [ 9 9 9 ];
+    index_j= [ 3 4 5 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='detector_block';
+        end
+    end
+    
+    % % % put the neutron sourve
+    index_i= [ 8 ];
+    index_j= [ 3 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='source_block';
+        end
+    end
+    
+    % % % put the large and small pneumatics
+    % put the large pneumatic
+    index_i= [ 1 ];
+    index_j= [ 2 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='Lpneumatic_block';
+        end
+    end
+    % put the small pneumatic
+    index_i= [ 2 ];
+    index_j= [ 4 ];
+    for ii=1:length(index_i)
+        i=index_i(ii);
+        for jj=1:length(index_j)
+            j=index_j(jj);
+            bundle_type{i,j}='Spneumatic_block';
+        end
     end
 end
-%  
+
 % create each bundle
 for i=1:max_row
     for j=1:max_col
-        [cell_ID, surf_ID]  = create_bundle((I-0.5)*pitch_x, (J-0.5)*pitch_y, bundle_type{I,J}, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j},cell_ID, surf_ID, file_handle_cell, file_handle_surf);
     end
 end
 

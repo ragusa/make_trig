@@ -10,7 +10,7 @@ c
 c  ***** Zirconium Rod *****
 c       Density: 6.51 g/cc (.01296)
 m1      40000.58c  4.2960E-2
-
+c
 c ****** Fresh fuel *****
 c        Density 8.71115E-2 (atomic density)
 m2      92234.71c  -0.000132187
@@ -22,7 +22,7 @@ m2      92234.71c  -0.000132187
         6000.71c  -3.63840E-03
         72000.60c  -3.87476E-05
 mt2  h/zr.14t  zr/h.14t
-
+c
 c  ***** SS-304,SS-304L (with ENDF-VI) *****
 c        Density: -8.0
 m3  6000.70c -0.000300   14028.70c -0.004594   14029.70c -0.000241
@@ -60,8 +60,5 @@ c +++++++++++++++++++++ Problem Specifics/Physics +++++++++++++++++++++++++++++
 mode  n  
 kcode 100 1.0 50 200
 ksrc  0 -25.0 0
-
-
-
-
+c
 c End of File

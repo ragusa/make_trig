@@ -4,6 +4,8 @@ function [cell_ID, surf_ID]  = create_bundle(x_bundle_center, y_bundle_center, b
 delta_x = 2.0250;  % larg_bundle/4=8.1001/4
 delta_y = 1.9272;  % leng_bundle/4=7.7089/4
 
+fprintf('bundle_type %s \n',bundle_type)
+
 switch bundle_type
     
     case 'empty_bundle'
