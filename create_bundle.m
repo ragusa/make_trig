@@ -1,5 +1,5 @@
 function [cell_ID, surf_ID]  = create_bundle(x_bundle_center, y_bundle_center, bundle_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
-%
+
 % distances from bundle center to pin centers
 delta_x = 2.0250;  % larg_bundle/4=8.1001/4
 delta_y = 1.9272;  % leng_bundle/4=7.7089/4
@@ -112,13 +112,42 @@ switch bundle_type
         y_center = y_bundle_center;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
-        %     case 'reflector_block'
-        %
-        %         % reflector
-        %         x_relfector = x_bundle_center;
-        %         y_reflector = y_bundle_center;
-        %         [cell_ID, surf_ID]  = create_hole(x_relfector, y_reflector, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
-        
-    otherwise
-        error('other bundle types not coded yet');
-end
+    case 'reflector_block'
+          pin_type='reflector';
+          % graphite block
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+         
+     case 'source_block'
+          pin_type='source';
+          % neutron source
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+          
+       
+     case 'detector_block'
+          pin_type='detector';
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+     
+      case 'Lpneumatic_block'
+          pin_type='large_pneumatic';
+          % large pneumatic
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+    
+      case 'Spneumatic_block'
+          pin_type='small_pneumatic';
+          % small pneumatic
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+              
+      
+      otherwise
+          error('other bundle types not coded yet');
+end 
