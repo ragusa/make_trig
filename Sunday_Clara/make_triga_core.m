@@ -4,7 +4,7 @@ file_handle_cell=fopen('cell.txt','w+');
 fprintf(file_handle_cell,'TESTING TRIGA CORE\n');
 file_handle_surf=fopen('surf.txt','w+');
 
-file_handle_data=fopen('data.txt','r');
+%file_handle_data=fopen('data.txt','r');
 
 water_thickness_x=237.87;  % distance between the concrete and the outer pool surfaces on the x axis
 water_thickness_y=280.72; % distance between the concrete and the outer pool surfaces on the y axis
@@ -191,7 +191,7 @@ water_mat_ID = 5;
 water_density = -0.10004;
 fprintf(file_handle_cell,'%5d  %g %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,1,-2,3,-4,5,-6);
 k=0;
-for icell=cell_ID_start+1:cell_ID_end,file_handle_cell
+for icell=cell_ID_start+1:cell_ID_end
     if k==0
         fprintf(file_handle_cell,'        ');  % just white spaces
     end
