@@ -39,28 +39,30 @@ cell_ID_start=cell_ID;
 max_row=9;
 max_col=6;
 
-% fill bundle layout with fuel bundle
-% debug_viz=true;
-% if debug_viz
-%     F='empty_bundle';
-%     for i=1:max_row
-%         for j=1:max_col
-%             bundle_type{i,j}=F;
-%         end
-%     end
-%     
-%     bundle_type{1,1}='water_holes';
-%     bundle_type{1,2}='transient_bundle';
-%     bundle_type{1,3}='reflector_block';
-%     bundle_type{2,1}='detector_block';
-%     bundle_type{2,2}='source_block';
-%     bundle_type{2,3}='Lpneumatic_block';
-%     bundle_type{3,1}='Spneumatic_block';
-%     bundle_type{3,2}='shim_bundle';
-%     bundle_type{3,3}='water_regulating_bundle';
-%     bundle_type{4,1}='fuel_bundle';
-% 
-% else
+%fill bundle layout with fuel bundle
+debug_viz=true;
+if debug_viz
+    F='empty_bundle';
+    for i=1:max_row
+        for j=1:max_col
+            bundle_type{i,j}=F;
+        end
+    end
+    
+    bundle_type{1,1}='water_holes';
+    bundle_type{1,2}='transient_bundle';
+    bundle_type{1,3}='reflector_block';
+    bundle_type{2,1}='detector_block';
+    bundle_type{2,2}='source_block';
+    bundle_type{2,3}='Lpneumatic_block';
+    bundle_type{3,1}='Spneumatic_block';
+    bundle_type{3,2}='shim_bundle';
+    bundle_type{3,3}='water_regulating_bundle';
+    bundle_type{4,1}='fuel_bundle';
+%     bundle_type{4,2}='A-raw_long_tube';
+
+
+else
     F='fuel_bundle';
     for i=1:max_row
         for j=1:max_col
@@ -185,8 +187,7 @@ max_col=6;
             bundle_type{i,j}='A-raw_long_tube';
         end
     end
-% end
-% end
+end
 
 % create each bundle
 for i=1:max_row
