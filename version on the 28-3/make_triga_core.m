@@ -194,7 +194,7 @@ for i=1:max_row
         [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j},cell_ID, surf_ID, file_handle_cell, file_handle_surf);
     end
     for j=1:max_col 
-        [cell_ID, surf_ID]  = create_boundary((i-0.5)*pitch_x, (j-0.5)*pitch_y,cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        [cell_ID, surf_ID]  = create_boundary((i-0.5)*pitch_x,(j-0.5)*pitch_y,cell_ID, surf_ID, file_handle_cell, file_handle_surf);
     end
 end
 

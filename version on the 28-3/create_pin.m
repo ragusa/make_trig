@@ -251,7 +251,7 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  C/Z %g %g %g \n',surf_ID,x_center,y_center,radius_outer_source);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,surf_ID-1,z_min_source,-z_max); % CHECK
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,surf_ID-1,z_min_source,-z_max); 
         
         % Graphite box
         surf_ID=surf_ID+1; % increment surface ID
@@ -382,54 +382,7 @@ switch pin_type
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
         fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,z_min,-z_max);
-        
-%      case 'D-raw'
-%         % From the bottom to the top
-%         
-%         % Lead         
-%         surf_ID=surf_ID+1; % increment surface ID
-%         % write new cylinder surface in file_handle_surf
-%         fprintf(file_handle_surf,'%5d  C/Z %g %g %g \n',surf_ID,x_center,y_center,radius_D_row);
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,lead_mat_ID,lead_density,-surf_ID,z_min,-z_1);
-% 
-%         % Spacer
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,spacer_mat_ID,spacer_density,-surf_ID,z_1,-z_2);
-%         
-%         % Air
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_2,-z_3);        
-%         
-%         % Can
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,can_mat_ID,can_density,-surf_ID,z_3,-z_4);         
-%  
-%         % Air
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_4,-z_max);     
-%         
-%         % Clad
-%         surf_ID=surf_ID+1; % increment surface ID
-%         % write new cylinder surface in file_handle_surf
-%         fprintf(file_handle_surf,'%5d  C/Z %g %g %g \n',surf_ID,x_center,y_center,radius_clad_D_row);
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d  imp:n=1\n',cell_ID,clad_long_tube_mat_ID,clad_long_tube_density,-surf_ID,surf_ID-1,z_min,-z_max);
-%         
-%         % Water outside
-%         surf_ID=surf_ID+1; % increment surface ID
-%         % write new cylinder surface in file_handle_surf
-%         fprintf(file_handle_surf,'%5d  RPP %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
-%         cell_ID=cell_ID+1; % increment cell ID
-%         % write new cell in file_handle_cell
-%         fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,z_min,-z_max);
-        
+                
     otherwise
         error('other pin types not coded yet');
 end

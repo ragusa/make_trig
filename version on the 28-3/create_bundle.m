@@ -1,8 +1,7 @@
 function [cell_ID, surf_ID]  = create_bundle(x_bundle_center, y_bundle_center, bundle_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
 
 % distances from bundle center to pin centers
-delta =  1.9272;  % is L_block/2
-%%delta = 1.9272; leng_bundle/4=7.7089/4
+delta =  1.9272;  % is 1/4 length of the block
 L_block = 3.8544; % block is a square 
 z_block = 40;
 
