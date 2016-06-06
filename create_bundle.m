@@ -13,6 +13,15 @@ fprintf('bundle_type %s \n',bundle_type)
 
 switch bundle_type
     
+	%case 'bundle_test'
+	%	
+	%	pin_type='regulating_rod';
+    %    % north west: pin 1
+    %    x_center = x_bundle_center - delta;
+    %    y_center = y_bundle_center + delta;
+    %    [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+       
+	
     case 'empty_bundle'
         % do not put anything (for debugging)
         
@@ -48,32 +57,37 @@ switch bundle_type
         y_center = y_bundle_center + delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
-        % north east: pin 2
-        x_center = x_bundle_center + delta;
-        y_center = y_bundle_center + delta;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-        
         % south east: pin 3
         x_center = x_bundle_center + delta;
         y_center = y_bundle_center - delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
-        pin_type='fuel-followed_control_rod';
         % south west: pin 4
         x_center = x_bundle_center - delta;
         y_center = y_bundle_center - delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-       
+        
+        pin_type='fuel_control_rod';
+        % north east: pin 2
+        x_center = x_bundle_center + delta;
+        y_center = y_bundle_center + delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
     case 'water_regulating_bundle'
         
-        pin_type='water-followed_control_rod';
+        pin_type='regulating_rod';
         % north west: pin 1
         x_center = x_bundle_center - delta;
         y_center = y_bundle_center - delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
+         
         pin_type='regular_fuel_rod';
+        % south west: pin 4
+        x_center = x_bundle_center - delta;
+        y_center = y_bundle_center + delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        
         % north east: pin 2
         x_center = x_bundle_center + delta;
         y_center = y_bundle_center + delta;
@@ -82,11 +96,6 @@ switch bundle_type
         % south east: pin 3
         x_center = x_bundle_center + delta;
         y_center = y_bundle_center - delta;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-        
-        % south west: pin 4
-        x_center = x_bundle_center - delta;
-        y_center = y_bundle_center + delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
           
@@ -103,17 +112,59 @@ switch bundle_type
         y_center = y_bundle_center + delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
+        % south west: pin 4
+        x_center = x_bundle_center - delta;
+        y_center = y_bundle_center - delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        
+        pin_type='transient_rod';
+        % south east: pin 3
+        x_center = x_bundle_center + delta;
+        y_center = y_bundle_center - delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+   
+    case 'special_bundle'
+        
+        pin_type='regular_fuel_rod';
+        % north west:1
+        x_center = x_bundle_center - delta;
+        y_center = y_bundle_center + delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        
+        % north east:2
+        x_center = x_bundle_center + delta;
+        y_center = y_bundle_center + delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+                 
+        % south west:4
+        x_center = x_bundle_center - delta;
+        y_center = y_bundle_center - delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+	
+	case 'water_filled_rod_bundle'
+        
+        pin_type='water-followed_rod';
         % south east: pin 3
         x_center = x_bundle_center + delta;
         y_center = y_bundle_center - delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         
-        pin_type='air-followed_transient_rod';
         % south west: pin 4
         x_center = x_bundle_center - delta;
         y_center = y_bundle_center - delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);   
+        
+        pin_type='regular_fuel_rod';
+        % north west: pin 1
+        x_center = x_bundle_center - delta;
+        y_center = y_bundle_center + delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-         
+        % north east: pin 2
+        x_center = x_bundle_center + delta;
+        y_center = y_bundle_center + delta;
+        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+       
+   
     case 'water_holes'
         pin_type='water';
         % hole
@@ -129,14 +180,27 @@ switch bundle_type
           y_center = y_bundle_center;
           [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
 
-     case 'source_block'
-          pin_type='source';
+    case 'empty_block'
+          pin_type='empty';
+          % water 
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+     
+    case 'source_block1'
+          pin_type='source1';
           % neutron source
           x_center = x_bundle_center;
           y_center = y_bundle_center;
           [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
           
-       
+     case 'source_block2'
+          pin_type='source2';
+          % neutron source
+          x_center = x_bundle_center;
+          y_center = y_bundle_center;
+          [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+          
      case 'detector_block'
           pin_type='detector';
           x_center = x_bundle_center;

@@ -42,7 +42,7 @@ c
 c  ***** Light Water *******
 c        Density: 0.10004 g/cc  
 m5      1001.70c  6.6691E-2
-            8016.70c  3.3346E-2
+        8016.70c  3.3346E-2
 mt5     lwtr.10t
 c
 c  ***** Air ***********
@@ -50,23 +50,21 @@ c        Density: 1.0E-5 g/cc
 m6      8016  0.000002
         7014  0.000008
 c
-c  ***** Structural Aluminum 6061 
+c  ***** Structural Aluminum 6061 *****
 c        Density: 2.7 g/cc (0.059195)
 m7      13027.70c  0.058693
         26056.70c  0.000502
 mt7     al27.12t
 c
-c  ***** Structural Aluminum 6061 
-c        Density: 2.7 g/cc (0.059195)
-m8      13027.70c  0.058693
-        26056.70c  0.000502
-mt8     al27.12t
-c  ***** Structural Aluminum 6061 
-c        Density: 2.7 g/cc (0.059195)
-m9      13027.70c  0.058693
-        26056.70c  0.000502
-mt9     al27.12t
+c  ***** Lead  *****
+c        Density:  -11.34 g/cc
+m8      82000  1
 c
+c  ***** Boron Carbide *****
+c        Density: 0.135143
+m9      5010.70c  0.020950
+            5011.70c  0.084310
+            6012.50c  0.026320
 c
 c +++++++++++++++++++++ Problem Specifics/Physics +++++++++++++++++++++++++++++
 mode  n  
