@@ -8,13 +8,15 @@ file_handle_surf=fopen('surf.txt','w+');
 
 water_thickness_x=237.87;  % distance between the concrete and the outer pool surfaces on the x axis
 water_thickness_y=280.72; % distance between the concrete and the outer pool surfaces on the y axis
+Lx=72.90054;
+Ly=46.2534;
 % create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  PZ %g \n',1,-100.0);
 fprintf(file_handle_surf,'%5d  PZ %g \n',2, 100.0);
-fprintf(file_handle_surf,'%5d  PX %g \n',3,0       -water_thickness_x);
-fprintf(file_handle_surf,'%5d  PX %g \n',4,72.90054+water_thickness_x);
-fprintf(file_handle_surf,'%5d  PY %g \n',5,0      -water_thickness_y);
-fprintf(file_handle_surf,'%5d  PY %g \n',6,46.2534+water_thickness_y);
+fprintf(file_handle_surf,'%5d  PX %g \n',3,0  -water_thickness_x);
+fprintf(file_handle_surf,'%5d  PX %g \n',4,Lx +water_thickness_x);
+fprintf(file_handle_surf,'%5d  PY %g \n',5,0  -water_thickness_y);
+fprintf(file_handle_surf,'%5d  PY %g \n',6,Ly +water_thickness_y);
 % define plans PZ =0 and intermediates plans PZ to create pins
 %% PZ for the shim safety rods or control rods
 fprintf(file_handle_surf,'%5d  PZ %g \n',7,-75.56 );
@@ -72,7 +74,7 @@ pitch_y = 7.7089;
 % starting IDs for automatically generated ID's
 surf_ID=50;
 cell_ID=50;
-cell_ID_start=cell_ID;
+% % % cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
@@ -312,38 +314,63 @@ else
 	
 end
 
+water_mat_ID = 5;
+water_density = -0.10004;
+
 % create each bundle
 for i=1:max_row
     for j=1:max_col
+        % keep track of the cell ID before creating the bundle
+        cell_ID_bundle_start = cell_ID;
         [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j},cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-    end
-end
-
-% get last cell ID used
-cell_ID_end=cell_ID;
-
-% finish box
-cell_ID=cell_ID+1; % increment cell ID
-water_mat_ID = 5;
-water_density = -0.10004;
-fprintf(file_handle_cell,'%5d  %g %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,1,-2,3,-4,5,-6);
-k=0;
-for icell=cell_ID_start+1:cell_ID_end
-    if k==0
-        fprintf(file_handle_cell,'        ');  % just white spaces
-    end
-    fprintf(file_handle_cell,'#%d  ',icell);  % complement operation
-    k=k+1;
-    if k==8
-        fprintf(file_handle_cell,'\n');
+        % keep track of the cell ID AFTER creating the bundle
+        cell_ID_bundle_end   = cell_ID;
+        % finish water box around a given bundle
+        % create the 4 planes (MCNP will delete redundant surfaces anyway)
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i-1)*pitch_x);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i  )*pitch_x);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j-1)*pitch_y);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j  )*pitch_y);
+        % create the water cell for that bundle
+        cell_ID=cell_ID+1; % increment cell ID
+        fprintf(file_handle_cell,'%5d  %g %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,...
+            1,-2,(surf_ID-3),-(surf_ID-2),(surf_ID-1),-surf_ID);
         k=0;
+        for icell=cell_ID_bundle_start+1:cell_ID_bundle_end
+            if k==0
+                fprintf(file_handle_cell,'        ');  % just white spaces
+            end
+            fprintf(file_handle_cell,'#%d  ',icell);  % complement operation
+            k=k+1;
+            if k==8
+                fprintf(file_handle_cell,'\n');
+                k=0;
+            end
+        end
+        if k==0
+            fprintf(file_handle_cell,'     imp:n=1 \n');
+        else
+            fprintf(file_handle_cell,'imp:n=1 \n');
+        end
     end
 end
-if k==0
-    fprintf(file_handle_cell,'     imp:n=1 \n');
-else
-    fprintf(file_handle_cell,'imp:n=1 \n');
-end
+
+% % % get last cell ID used
+% % cell_ID_end=cell_ID;
+
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i-1)*pitch_x);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i  )*pitch_x);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j-1)*pitch_y);
+        surf_ID = surf_ID +1;
+        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j  )*pitch_y);
+
 % importance 0
 cell_ID=cell_ID+1; % increment cell ID
 fprintf(file_handle_cell,'%5d  %g %d:%d:%d:%d:%d:%d imp:n=0 \n',cell_ID,0,-1,2,-3,4,-5,6);
