@@ -124,7 +124,7 @@ switch bundle_type
         y_center = y_bundle_center - delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
    
-    case 'special_bundle'
+    case 'half_bundle'
         
         pin_type='regular_fuel_rod';
         % north west:1
