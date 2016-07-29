@@ -321,7 +321,7 @@ switch pin_type
   		fprintf(file_handle_surf,'%5d  RPP %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,z_min_fuel,z_max_fuel);
   		cell_ID=cell_ID+1; % increment cell ID
   		% write new cell in file_handle_cell
-  		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,+surf_ID-3,z_min_water_hole,-z_max_water_hole);
+  		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,+surf_ID-2,z_min_water_hole,-z_max_water_hole);
       
     case 'reflector'
         %graphite block
@@ -479,7 +479,7 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  RPP %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,+surf_ID-3,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,+surf_ID-2,z_min,-z_max);
          
 		case 'A-raw'
         % From the bottom to the top
