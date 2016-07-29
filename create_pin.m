@@ -362,7 +362,7 @@ switch pin_type
 		fprintf(file_handle_surf,'%5d  RPP %g %g %g %g %g %g \n',surf_ID,x_center-3.81,x_center+3.81,y_center-3.81,y_center+3.81,z_1_detector,z_3_detector);
 		cell_ID=cell_ID+1; % increment cell ID% 
 		% write a new cell in file_handle_cell with clad inside 
-		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,clad_mat_ID,clad_density,-surf_ID,surf_ID-1,surf_ID-2,z_1_detector,-z_3_detector);
+		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d imp:n=1 \n',cell_ID,clad_mat_ID,clad_density,-surf_ID,surf_ID-1,surf_ID-2,z_1_detector,-z_3_detector);
 
         
     case 'source1'
