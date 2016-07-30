@@ -27,7 +27,7 @@ water_density          = 0.10004; % light water in g/cc
 air_density            = -1.0E-05;
 alu_density            = -2.7; % strucural aluminium 6061 in g/cc
 %% alu is also the spacer material, the grid material and the bottom plug material
-detector_density       = water_density % water_density
+detector_density       = water_density; % water_density
 pneumatic_density      = air_density;
 spacer_density         = clad_density; % SS-304,SS-304L or steanless aluminium
 pneu_clad_mat_density  = clad_density; 
@@ -50,6 +50,7 @@ radius_inner_small_Spneu = 0.885;
 radius_outer_small_Spneu = 0.950;
 radius_inner_large_Spneu = 1.225;
 radius_outer_large_Spneu = 1.300;
+%%%% PROVIDE EXPLANATIONS/COMMENTS FOR THE VALUES BELOW
 L_block                  = 3.8544; % block is a square 
 z_block                  = 40;
 thickness_clad           = 0.32500;
@@ -58,7 +59,7 @@ thickness_box_y          = 0.63500;
 radius_A_row             = 3.05;
 radius_clad_A_row        = 3.3675;
 radius_low               = 3.865;
-radius_high              = 3.05  
+radius_high              = 3.05;  
 % % radius_D_row             = 3.05;
 % % radius_clad_D_row        = 3.3675;
 % z-plane surf ID
@@ -351,10 +352,10 @@ switch pin_type
 		fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,z_1_detector,-z_3_detector);
 		surf_ID=surf_ID+1; % increment surfqce ID
 		% write new box surface in file_handle_surf
-		fprintf(file_handle_surf,'%5d RPP %g %g %g %g %g %g \n',surf_ID,x_center-3.495,x_center-1.31,y_center-3.495,y_center+3.495,z_1_detector,z_2_detector);
+		fprintf(file_handle_surf,'%5d  RPP %g %g %g %g %g %g \n',surf_ID,x_center-3.495,x_center-1.31,y_center-3.495,y_center+3.495,z_1_detector,z_2_detector);
 		cell_ID=cell_ID+1; % increment cell ID% 
 		% write a new cell in file_handle_cell with water inside
-		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,graphite_mat_ID,graphite_density,-surf_ID,z_1_detector,-z_3_detector);
+		fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,graphite_mat_ID,graphite_density,-surf_ID,z_1_detector,-z_3_detector);
 		
 		% cladding 
 		surf_ID=surf_ID+1; % increment surface ID

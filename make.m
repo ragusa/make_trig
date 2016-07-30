@@ -337,7 +337,7 @@ for i=1:max_row
         fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j  )*pitch_y);
         % create the water cell for that bundle
         cell_ID=cell_ID+1; % increment cell ID
-        fprintf(file_handle_cell,'%5d  %g %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,...
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,...
             1,-2,(surf_ID-3),-(surf_ID-2),(surf_ID-1),-surf_ID);
         k=0;
         for icell=cell_ID_bundle_start+1:cell_ID_bundle_end
@@ -361,16 +361,31 @@ end
 
 % % % get last cell ID used
 % % cell_ID_end=cell_ID;
-
-        surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i-1)*pitch_x);
-        surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,(i  )*pitch_x);
-        surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j-1)*pitch_y);
-        surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,(j  )*pitch_y);
-
+%
+%    +-----------------6----------------+
+%    |                                  |
+%    |      +----------d---------+      |
+%    |      |                    |      |
+%    3      a       core         b      4
+%    |      |                    |      |
+%    |      +----------c---------+      |
+%    |                                  |
+%    +-----------------5----------------+
+%
+surf_ID = surf_ID +1; a = surf_ID; 
+fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,0*pitch_x);
+surf_ID = surf_ID +1; b = surf_ID;
+fprintf(file_handle_surf,'%5d  PX %g \n',surf_ID,max_row*pitch_x);
+surf_ID = surf_ID +1; c = surf_ID;
+fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,0*pitch_y);
+surf_ID = surf_ID +1; d = surf_ID;
+fprintf(file_handle_surf,'%5d  PY %g \n',surf_ID,max_col*pitch_y);
+% create the water cell for water outside of the core
+cell_ID=cell_ID+1; % increment cell ID
+% fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 d -6):(1 -2 3 -4 5 -c):(1 -2 3 -a c -d):(1 -2 b -4 c -d) \n',cell_ID,water_mat_ID,water_density,...
+fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 %d -6):(1 -2 3 -4 5 -%d):\n%s(1 -2 3 -%d %d -%d):(1 -2 %d -4 %d -%d) imp:n=1\n',...
+    cell_ID,water_mat_ID,water_density,d,c,'                  ',a,c,d,b,c,d);
+        
 % importance 0
 cell_ID=cell_ID+1; % increment cell ID
 fprintf(file_handle_cell,'%5d  %g %d:%d:%d:%d:%d:%d imp:n=0 \n',cell_ID,0,-1,2,-3,4,-5,6);
@@ -382,3 +397,4 @@ fclose(file_handle_cell);
 fclose(file_handle_surf);
 
 system('copy cell.txt+surf.txt+data.txt input.inp');
+% system('copy cell.txt+surf.txt+data.txt+data_RT.txt input.inp');
