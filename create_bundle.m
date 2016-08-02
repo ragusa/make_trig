@@ -2,15 +2,8 @@
 function [cell_ID, surf_ID]  = create_bundle(x_bundle_center, y_bundle_center, bundle_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
 
 % distances from bundle center to pin centers
-delta =  7.7089/4;  % is 1/4 length of the block
-L_block =46.2534/6; % block is a square  %%% WHAT IS THIS NUMBER FOR?
-z_block = 40; %%% WHAT IS THIS NUMBER FOR?
-
-% z-plane surf ID
-z_min        = 1;
-z_max        = 2;
-
-% fprintf('bundle_type %s \n',bundle_type)
+L_block =46.2534/6; % dimension of a single bundle, treated as a square
+delta =  L_block/4;  % is 1/4 length of the block
 
 switch bundle_type
     
@@ -167,7 +160,7 @@ switch bundle_type
        
    
     case 'water_holes'
-        pin_type='water1';
+        pin_type='water_2';
         % hole
         x_center = x_bundle_center;
         y_center = y_bundle_center;
