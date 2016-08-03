@@ -101,6 +101,8 @@ z_1_tube            = 42;
 z_2_tube            = 43;
 z_3_tube            = 44;
 z_4_tube            = 45;
+z_min_pneum         = 46;
+z_max_pneum         = 47;
 
 
 switch pin_type
@@ -321,7 +323,7 @@ switch pin_type
   		% write new cell in file_handle_cell
   		fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,+surf_ID-2,z_min_water_hole,-z_max_water_hole);
      
-	 case 'water_2'
+	 case 'water2'
         % Water inside
         surf_ID=surf_ID+1; % increment surface ID
         % write new cylinder surface in file_handle_surf
@@ -350,12 +352,7 @@ switch pin_type
     
     case 'empty'
         % filled of water
-        surf_ID=surf_ID+1; % increment surface ID
-        % write new cylinder surface in file_handle_surf
-        fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,z_min,-z_max);    
+     
         
     case 'detector'
 		% graphite
@@ -365,13 +362,13 @@ switch pin_type
 		cell_ID=cell_ID+1; % increment cell ID% 
 		% write a new cell in file_handle_cell with graphite inside
 		fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,graphite_mat_ID,graphite_density,-surf_ID,z_1_detector,-z_2_detector);
-        % water
-		surf_ID=surf_ID+1; % increment surface ID
-		% write a new box surface in file_handle_surf
-		fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-1.31,x_center+3.495,y_center-3.495,y_center+3.495,-33.135,67.835);
-		cell_ID=cell_ID+1; % increment cell ID% 
-		% write a new cell in file_handle_cell with graphite inside
-		fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,z_1_detector,-z_2_detector);
+        % % water
+		% surf_ID=surf_ID+1; % increment surface ID
+		% % write a new box surface in file_handle_surf
+		% fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-1.31,x_center+3.495,y_center-3.495,y_center+3.495,-33.135,67.835);
+		% cell_ID=cell_ID+1; % increment cell ID% 
+		% % write a new cell in file_handle_cell with graphite inside
+		% fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,z_1_detector,-z_2_detector);
 		
 		% cladding 
 		surf_ID=surf_ID+1; % increment surface ID
@@ -441,22 +438,15 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center,y_center,radius_inner_Lpneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min_pneum,-z_max_pneum);
         % Pneumatic clad
         surf_ID=surf_ID+1; % increment surface ID
         % write new cylinder surface in file_handle_surf
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n', surf_ID,x_center,y_center,radius_outer_Lpneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min_pneum,-z_max_pneum);
         
-        % water block
-        surf_ID=surf_ID+1; % increment surface ID
-        % write new cylinder surface in file_handle_surf
-        fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,z_min,-z_max);
         
     case 'small_pneumatic'
         % small pneumatic
@@ -466,14 +456,14 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center+2,y_center,radius_inner_small_Spneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min_pneum,-z_max_pneum);
         % Pneumatic clad
         surf_ID=surf_ID+1; % increment surface ID
         % write new cylinder surface in file_handle_surf
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n', surf_ID,x_center+2,y_center,radius_outer_small_Spneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min_pneum,-z_max_pneum);
         
         % large pneumatic inside
         surf_ID=surf_ID+1; % increment surface ID
@@ -481,22 +471,15 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center-2,y_center,radius_inner_large_Spneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,pneumatic_mat_ID,pneumatic_density,-surf_ID,z_min_pneum,-z_max_pneum);
         % Pneumatic clad
         surf_ID=surf_ID+1; % increment surface ID
         % write new cylinder surface in file_handle_surf
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n', surf_ID,x_center-2,y_center,radius_outer_large_Spneu);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,pneu_clad_mat_ID,pneu_clad_mat_density,-surf_ID,surf_ID-1,z_min_pneum,-z_max_pneum);
         
-        % water block
-        surf_ID=surf_ID+1; % increment surface ID
-        % write new cylinder surface in file_handle_surf
-        fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,+surf_ID-2,z_min,-z_max);
          
 		case 'A-raw'
         % From the bottom to the top
@@ -537,13 +520,13 @@ switch pin_type
         % write new cell in file_handle_cell
         fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d  imp:n=1\n',cell_ID,clad_long_tube_mat_ID,clad_long_tube_density,-surf_ID,surf_ID-1,z_min,-z_max);
         
-        % Water outside
-        surf_ID=surf_ID+1; % increment surface ID
-        % write new cylinder surface in file_handle_surf
-        fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,z_min,-z_max);
+        % % Water outside
+        % surf_ID=surf_ID+1; % increment surface ID
+        % % write new cylinder surface in file_handle_surf
+        % fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-L_block,x_center+L_block,y_center-L_block,y_center+L_block,-z_block,z_block);
+        % cell_ID=cell_ID+1; % increment cell ID
+        % % write new cell in file_handle_cell
+        % fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,water_mat_ID,water_density,-surf_ID,+surf_ID-1,z_min,-z_max);
 		
 		case 'water-followed_rod'
         % graphite upper part
