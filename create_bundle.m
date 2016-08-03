@@ -129,11 +129,6 @@ switch bundle_type
         x_center = x_bundle_center + delta;
         y_center = y_bundle_center + delta;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-                 
-        % south west:4
-        x_center = x_bundle_center - delta;
-        y_center = y_bundle_center - delta;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
 	
 	case 'water_filled_rod_bundle'
         
@@ -160,7 +155,7 @@ switch bundle_type
        
    
     case 'water_holes'
-        pin_type='water_2';
+        pin_type='water2';
         % hole
         x_center = x_bundle_center;
         y_center = y_bundle_center;
