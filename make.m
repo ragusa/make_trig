@@ -40,10 +40,11 @@ fprintf(file_handle_surf,'%5d  pz %g \n',20,19.38 );
 fprintf(file_handle_surf,'%5d  pz %g \n',21,20.65 );  
 fprintf(file_handle_surf,'%5d  pz %g \n',22,33.236); 
 %% pz for the regulating rod
-fprintf(file_handle_surf,'%5d  pz %g \n',23,39.06 ); 
-fprintf(file_handle_surf,'%5d  pz %g \n',24,39.38 ); 
-fprintf(file_handle_surf,'%5d  pz %g \n',25,40.65 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',26,53.236);   
+fprintf(file_handle_surf,'%5d  pz %g \n',23,19.06 ); 
+fprintf(file_handle_surf,'%5d  pz %g \n',24,19.38 ); 
+fprintf(file_handle_surf,'%5d  pz %g \n',25,20.65 );  
+fprintf(file_handle_surf,'%5d  pz %g \n',26,33.236);  
+fprintf(file_handle_surf,'%5d  pz %g \n',48,54.816);  
 %% pz for the regular fuel rods
 fprintf(file_handle_surf,'%5d  pz %g \n',27,-38.1);
 fprintf(file_handle_surf,'%5d  pz %g \n',28,-27.94);
@@ -82,13 +83,12 @@ water_density=-0.99799;
 % starting IDs for automatically generated ID's
 surf_ID=50;
 cell_ID=50;
-cell_ID_start=cell_ID;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
 
 % fill bundle layout with fuel bundle
-debug_viz=false;
+debug_viz=true;
 if debug_viz
     F='empty_bundle';
     for i=1:max_row
@@ -97,16 +97,16 @@ if debug_viz
         end
     end
     
-%     bundle_type{1,1}='water_holes';
-%     bundle_type{1,2}='transient_bundle';
-%     bundle_type{1,3}='reflector_block';
-%     bundle_type{2,1}='detector_block';
-%     bundle_type{2,2}='source_block';
-      bundle_type{2,3}='Lpneumatic_block';
-      bundle_type{3,3}='Spneumatic_block';
-%     bundle_type{3,2}='shim_bundle';
-%     bundle_type{3,3}='water_regulating_bundle';
-%    bundle_type{4,1}='fuel_bundle';
+     bundle_type{1,1}='water_holes';
+     bundle_type{1,2}='transient_bundle';
+     bundle_type{1,3}='reflector_block';
+     bundle_type{2,1}='detector_block';
+     bundle_type{2,2}='source_block';
+     bundle_type{2,3}='Lpneumatic_block';
+     bundle_type{3,3}='Spneumatic_block';
+     bundle_type{3,2}='shim_bundle';
+     bundle_type{3,4}='water_regulating_bundle';
+     bundle_type{4,1}='fuel_bundle';
 
 else
 	% fill bundle layout with regular fuel bundles

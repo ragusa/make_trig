@@ -84,6 +84,7 @@ z_min_regulating    = 23;
 z_1_regulating      = 24;
 z_2_regulating      = 25;
 z_max_regulating    = 26;
+z_3_regulating      = 48;
 z_min_fuel          = 27;
 z_1_fuel            = 28;
 z_2_fuel            = 29;
@@ -221,31 +222,28 @@ switch pin_type
 
         
     case 'regulating_rod'
-        % absorber
-        surf_ID=surf_ID+1; % increment surface ID
+		% air
+		surf_ID=surf_ID+1; % increment surface ID
         % write new cylinder surface in file_handle_surf
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center,y_center,radius_fuel_meat);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,abs_mat_ID,abs_density,-surf_ID,-z_min_regulating,z_min);
-		
-		% air
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,-z_1_regulating,z_min_regulating);
-        cell_ID=cell_ID+1; % increment cell ID
-        % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,-z_max_regulating,z_2_regulating);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_min_regulating,-z_1_regulating);
 		
 		% spacer
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,-z_2_regulating,z_1_regulating);
-        
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,z_1_regulating,-z_2_regulating);
+		
+		% absorber
+        cell_ID=cell_ID+1; % increment cell ID
+        % write new cell in file_handle_cell
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,abs_mat_ID,abs_density,-surf_ID,z_2_regulating,-z_max_regulating);
+		    
         % aluminium
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,-z_max,z_max_regulating);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,z_max_regulating,-z_3_regulating);
         
         % clad
         surf_ID=surf_ID+1; % increment surface ID
@@ -253,7 +251,7 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n', surf_ID,x_center,y_center,radius_clad);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,clad_mat_ID,clad_density,-surf_ID,surf_ID-1,z_min,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d imp:n=1 \n',cell_ID,clad_mat_ID,clad_density,-surf_ID,surf_ID-1,z_min_regulating,-z_3_regulating);
         
         
     case 'transient_rod'
