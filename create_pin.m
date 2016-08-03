@@ -57,10 +57,8 @@ thickness_box_x          = 1.9050;
 thickness_box_y          = 0.63500;
 radius_A_row             = 3.05;
 radius_clad_A_row        = 3.3675;
-radius_low               = 3.865;
-radius_high              = 3.05; 
-% % radius_D_row             = 3.05;
-% % radius_clad_D_row        = 3.3675;
+%% radius_low               = 3.865; % used for the cone in the other description of water holes water1 
+%% radius_high              = 3.05;  % and should be used when the converter will take tthe TRC macrobody into account
 % z-plane surf ID
 z_min               = 1;
 z_max               = 2;
@@ -74,12 +72,14 @@ z_6_shim            = 13;
 z_7_shim            = 14;
 z_8_shim            = 15;
 z_max_shim          = 16;
+z_5_transient       = 49;
 z_min_transient     = 17;
 z_1_transient       = 18;
 z_2_transient       = 19;
 z_3_transient       = 20;
 z_4_transient       = 21;
 z_max_transient     = 22;
+z_6_transient       = 50;
 z_min_regulating    = 23;
 z_1_regulating      = 24;
 z_2_regulating      = 25;
@@ -261,7 +261,7 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center,y_center,radius_fuel_meat);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_min,-z_min_transient);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_5_transient,-z_min_transient);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
         fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,air_mat_ID,air_density,-surf_ID,z_2_transient,-z_3_transient);
@@ -285,7 +285,7 @@ switch pin_type
 		% Aluminium
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,z_max_transient,-z_max);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,alu_mat_ID,alu_density,-surf_ID,z_max_transient,-z_6_transient);
 		
         % clad
         surf_ID=surf_ID+1; % increment surface ID

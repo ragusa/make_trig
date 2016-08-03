@@ -6,20 +6,22 @@ file_handle_surf=fopen('surf.txt','w+');
 
 %file_handle_data=fopen('data.txt','r');
 
-water_thickness_x=237.87;  % distance between the concrete and the outer pool surfaces on the x axis
+water_thickness_x=237.87; % distance between the concrete and the outer pool surfaces on the x axis
 water_thickness_y=280.72; % distance between the concrete and the outer pool surfaces on the y axis
 % active core dimensions
 Lx = 72.90054;
 Ly = 46.2534;
+z_min_cm = -100;
+z_max_cm = 200;
 
 % create the surfaces to define the core
-fprintf(file_handle_surf,'%5d  pz %g \n',1,-100.0);
-fprintf(file_handle_surf,'%5d  pz %g \n',2, 200.0);
-% planes 3 4 5 6: x/y limits of the active core
-fprintf(file_handle_surf,'%5d  px %g \n',3,0 -water_thickness_x);
-fprintf(file_handle_surf,'%5d  px %g \n',4,Lx+water_thickness_x);
-fprintf(file_handle_surf,'%5d  py %g \n',5,0 -water_thickness_y);
-fprintf(file_handle_surf,'%5d  py %g \n',6,Ly+water_thickness_y);
+fprintf(file_handle_surf,'%5d  pz %g \n',1,z_min_cm);
+fprintf(file_handle_surf,'%5d  pz %g \n',2,z_max_cm);
+% % planes 3 4 5 6: x/y limits of the active core
+% fprintf(file_handle_surf,'%5d  px %g \n',3,0 -water_thickness_x);   have been replace
+% fprintf(file_handle_surf,'%5d  px %g \n',4,Lx+water_thickness_x);   by the rpp surface
+% fprintf(file_handle_surf,'%5d  py %g \n',5,0 -water_thickness_y);   coded at the end 
+% fprintf(file_handle_surf,'%5d  py %g \n',6,Ly+water_thickness_y);   of the make 
 % define plans pz =0 and intermediates plans pz to create pins
 %% pz for the shim safety rods or control rods
 fprintf(file_handle_surf,'%5d  pz %g \n',7,-75.56 );
@@ -39,6 +41,8 @@ fprintf(file_handle_surf,'%5d  pz %g \n',19,19.06 );
 fprintf(file_handle_surf,'%5d  pz %g \n',20,19.38 );  
 fprintf(file_handle_surf,'%5d  pz %g \n',21,20.65 );  
 fprintf(file_handle_surf,'%5d  pz %g \n',22,33.236); 
+fprintf(file_handle_surf,'%5d  pz %g \n',49,-76.825);  
+fprintf(file_handle_surf,'%5d  pz %g \n',50,112.601); 
 %% pz for the regulating rod
 fprintf(file_handle_surf,'%5d  pz %g \n',23,19.06 ); 
 fprintf(file_handle_surf,'%5d  pz %g \n',24,19.38 ); 
@@ -88,7 +92,7 @@ cell_ID=50;
 % % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
 
 % fill bundle layout with fuel bundle
-debug_viz=true;
+debug_viz=false;
 if debug_viz
     F='empty_bundle';
     for i=1:max_row
@@ -97,16 +101,16 @@ if debug_viz
         end
     end
     
-     bundle_type{1,1}='water_holes';
-     bundle_type{1,2}='transient_bundle';
-     bundle_type{1,3}='reflector_block';
-     bundle_type{2,1}='detector_block';
-     bundle_type{2,2}='source_block';
-     bundle_type{2,3}='Lpneumatic_block';
-     bundle_type{3,3}='Spneumatic_block';
-     bundle_type{3,2}='shim_bundle';
-     bundle_type{3,4}='water_regulating_bundle';
-     bundle_type{4,1}='fuel_bundle';
+%     bundle_type{1,1}='water_holes';
+%    bundle_type{1,2}='transient_bundle';
+%   bundle_type{1,3}='reflector_block';
+%    bundle_type{2,1}='detector_block';
+%    bundle_type{2,2}='source_block';
+%    bundle_type{2,3}='Lpneumatic_block';
+%    bundle_type{3,3}='Spneumatic_block';
+%    bundle_type{3,2}='shim_bundle';
+%    bundle_type{3,4}='water_regulating_bundle';
+%    bundle_type{4,1}='fuel_bundle';
 
 else
 	% fill bundle layout with regular fuel bundles
@@ -277,6 +281,11 @@ else
 	
 end
 
+% create the boundary of the core = to replace the surfaces 1 2 3 4 5 and 6
+  		surf_ID=surf_ID+1; % increment surface ID
+  		% write the box surface in file_handle_surf
+  		fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,0,Lx,0,Ly,-100,200);
+		
 % create each bundle
 for i=1:max_row
     for j=1:max_col
@@ -319,8 +328,6 @@ for i=1:max_row
     end
 end
 
-% % % get last cell ID used
-% % cell_ID_end=cell_ID;
 %
 %    +-----------------6----------------+
 %    |                                  |
@@ -332,23 +339,31 @@ end
 %    |                                  |
 %    +-----------------5----------------+
 %
-surf_ID = surf_ID +1; a = surf_ID; 
-fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,0*pitch_x);
-surf_ID = surf_ID +1; b = surf_ID;
-fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,max_row*pitch_x);
-surf_ID = surf_ID +1; c = surf_ID;
-fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,0*pitch_y);
-surf_ID = surf_ID +1; d = surf_ID;
-fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,max_col*pitch_y);
-% create the water cell for water outside of the core
+% RPP a b c d zmin zmax
+a = 0*pitch_x;
+b = max_row*pitch_x;
+c = 0*pitch_y;
+d = max_col*pitch_y;
+surf_ID = surf_ID +1; 
+fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,a,b,c,d,z_min_cm,z_max_cm);
+% pool: cylinder
+surf_ID = surf_ID +1; 
+water_thickness = 111; %%% To be checked;
+pool_radius = Lx/2 + water_thickness;
+fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,Lx/2,Ly/2,pool_radius );
+% cell outside of core, inside of pool
 cell_ID=cell_ID+1; % increment cell ID
-% fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 d -6):(1 -2 3 -4 5 -c):(1 -2 3 -a c -d):(1 -2 b -4 c -d) \n',cell_ID,water_mat_ID,water_density,...
-fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 %d -6):(1 -2 3 -4 5 -%d):\n%s(1 -2 3 -%d %d -%d):(1 -2 %d -4 %d -%d) imp:n=1\n',...
-    cell_ID,water_mat_ID,water_density,d,c,'                  ',a,c,d,b,c,d);
+fprintf(file_handle_cell,'%5d  %d %g %d %d 1 -2 imp:n=1\n',cell_ID,water_mat_ID,water_density,-surf_ID,surf_ID-1);
+
+% % % create the water cell for water outside of the core
+% % cell_ID=cell_ID+1; % increment cell ID
+% % % fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 d -6):(1 -2 3 -4 5 -c):(1 -2 3 -a c -d):(1 -2 b -4 c -d) \n',cell_ID,water_mat_ID,water_density,...
+% % fprintf(file_handle_cell,'%5d  %d %g (1 -2 3 -4 %d -6):(1 -2 3 -4 5 -%d):\n%s(1 -2 3 -%d %d -%d):(1 -2 %d -4 %d -%d) imp:n=1\n',...
+% %     cell_ID,water_mat_ID,water_density,d,c,'                  ',a,c,d,b,c,d);
         
 % importance 0
 cell_ID=cell_ID+1; % increment cell ID
-fprintf(file_handle_cell,'%5d  %g %d:%d:%d:%d:%d:%d imp:n=0 \n',cell_ID,0,-1,2,-3,4,-5,6);
+fprintf(file_handle_cell,'%5d  %d %d:%d:%d imp:n=0 \n',cell_ID,0,-1,2,surf_ID);
 
 
 fprintf(file_handle_cell,'\n');
