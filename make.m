@@ -14,7 +14,7 @@ Ly = 46.2534;
 
 % create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  pz %g \n',1,-100.0);
-fprintf(file_handle_surf,'%5d  pz %g \n',2, 100.0);
+fprintf(file_handle_surf,'%5d  pz %g \n',2, 200.0);
 % planes 3 4 5 6: x/y limits of the active core
 fprintf(file_handle_surf,'%5d  px %g \n',3,0 -water_thickness_x);
 fprintf(file_handle_surf,'%5d  px %g \n',4,Lx+water_thickness_x);
@@ -65,6 +65,9 @@ fprintf(file_handle_surf,'%5d  pz %5g \n',42,-16.28);
 fprintf(file_handle_surf,'%5d  pz %5g \n',43,-15.68);
 fprintf(file_handle_surf,'%5d  pz %5g \n',44,-10.68);
 fprintf(file_handle_surf,'%5d  pz %5g \n',45,10.68);
+%% PZ for the pneumatics
+fprintf(file_handle_surf,'%5d  pz %5g \n',46,-33.81);
+fprintf(file_handle_surf,'%5d  pz %5g \n',47,166.19);
 
 
 % given for the definition of the center of the bundle
@@ -97,10 +100,10 @@ if debug_viz
 %     bundle_type{1,1}='water_holes';
 %     bundle_type{1,2}='transient_bundle';
 %     bundle_type{1,3}='reflector_block';
-     bundle_type{2,1}='detector_block';
+%     bundle_type{2,1}='detector_block';
 %     bundle_type{2,2}='source_block';
-%     bundle_type{2,3}='Lpneumatic_block';
-%     bundle_type{3,1}='Spneumatic_block';
+      bundle_type{2,3}='Lpneumatic_block';
+      bundle_type{3,3}='Spneumatic_block';
 %     bundle_type{3,2}='shim_bundle';
 %     bundle_type{3,3}='water_regulating_bundle';
 %    bundle_type{4,1}='fuel_bundle';
@@ -353,5 +356,5 @@ fprintf(file_handle_surf,'\n');
 fclose(file_handle_cell);
 fclose(file_handle_surf);
 
-system('copy cell.txt+surf.txt+data.txt input.inp');
-% system('copy cell.txt+surf.txt+data.txt+data_RT.txt input.inp');
+% system('copy cell.txt+surf.txt+data.txt input.inp');
+system('copy cell.txt+surf.txt+data.txt+data_RT.txt input.inp');
