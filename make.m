@@ -1,4 +1,4 @@
-clear all; close all; clc;
+clear all; close all; clc;      
 
 file_handle_cell=fopen('cell.txt','w+');
 fprintf(file_handle_cell,'TESTING TRIGA CORE\n');
