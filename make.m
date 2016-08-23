@@ -11,8 +11,16 @@ water_thickness_y=280.72; % distance between the concrete and the outer pool sur
 % active core dimensions
 Lx = 72.90054;
 Ly = 46.2534;
+max_row=9;
+max_col=6;
+Lx_bundle = Lx/max_row;
+Ly_bundle = Ly/max_col;
+% given for the definition of the center of the bundle
+% % % % pitch_x = 4.05;
+% % % % pitch_y = 3.7089;
 z_min_cm = -100;
 z_max_cm = 200;
+
 
 % create the surfaces to define the core
 fprintf(file_handle_surf,'%5d  pz %g \n',1,z_min_cm);
@@ -28,11 +36,11 @@ fprintf(file_handle_surf,'%5d  pz %g \n',7,-75.56 );
 fprintf(file_handle_surf,'%5d  pz %g \n',8,-61.59 );
 fprintf(file_handle_surf,'%5d  pz %g \n',9,-59.05 );
 fprintf(file_handle_surf,'%5d  pz %g \n',10,-20.95); 
-fprintf(file_handle_surf,'%5d  pz %g \n',11,-30.31);  
+fprintf(file_handle_surf,'%5d  pz %g \n',11,-20.31);  
 fprintf(file_handle_surf,'%5d  pz %g \n',12,-19.04); 
-fprintf(file_handle_surf,'%5d  pz %g \n',13,19.06 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',14,19.38 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',15,20.65 );  
+fprintf(file_handle_surf,'%5d  pz %g \n',13,19.06);  
+fprintf(file_handle_surf,'%5d  pz %g \n',14,19.38);  
+fprintf(file_handle_surf,'%5d  pz %g \n',15,20.65);  
 fprintf(file_handle_surf,'%5d  pz %g \n',16,33.236); 
 %% pz for the transient rod
 fprintf(file_handle_surf,'%5d  pz %g \n',17,-20.31); 
@@ -74,22 +82,12 @@ fprintf(file_handle_surf,'%5d  pz %5g \n',45,10.68);
 fprintf(file_handle_surf,'%5d  pz %5g \n',46,-33.81);
 fprintf(file_handle_surf,'%5d  pz %5g \n',47,166.19);
 
-
-% given for the definition of the center of the bundle
-max_row=9;
-max_col=6;
-pitch_x = Lx/max_row;
-pitch_y = Ly/max_col;
-
 water_mat_ID = 5;
-water_density=-0.99799;
+water_density = -0.99799;
 
 % starting IDs for automatically generated ID's
-surf_ID=50;
-cell_ID=50;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % % % % % x_center=4.5; y_center=3.85445; % WHAT IS THIS?
+surf_ID = 50;
+cell_ID = 50;
 
 % fill bundle layout with fuel bundle
 debug_viz=false;
@@ -97,28 +95,31 @@ if debug_viz
     F='empty_bundle';
     for i=1:max_row
         for j=1:max_col
+            x_bundle_center(i,j) =  (i-1/2)*(Lx_bundle);
+            y_bundle_center(i,j) =  (j-1/2)*(Ly_bundle);
             bundle_type{i,j}=F;
         end
     end
     
 %     bundle_type{1,1}='water_holes';
 %    bundle_type{1,2}='transient_bundle';
-%   bundle_type{1,3}='reflector_block';
+%  bundle_type{1,1}='reflector_block';
 %    bundle_type{2,1}='detector_block';
 %    bundle_type{2,2}='source_block';
 %    bundle_type{2,3}='Lpneumatic_block';
 %    bundle_type{3,3}='Spneumatic_block';
 %    bundle_type{3,2}='shim_bundle';
 %    bundle_type{3,4}='water_regulating_bundle';
-%    bundle_type{4,1}='fuel_bundle';
+	bundle_type{1,1}='bundle_test';
+%  bundle_test{1,1}='fuel_bundle';
 
 else
 	% fill bundle layout with regular fuel bundles
     F='fuel_bundle';
-	x_bundle_center = (i-1/2)*(pitch_x)/2;
-    y_bundle_center = (j-1/2)*(pitch_y)/2;
     for i=1:max_row
         for j=1:max_col
+            x_bundle_center(i,j) =  (i-1/2)*(Lx_bundle);
+            y_bundle_center(i,j) =  (j-1/2)*(Ly_bundle);
             bundle_type{i,j}=F;
         end
     end
@@ -133,7 +134,7 @@ else
 %             bundle_type{i,j}='empty_bundle';
 %         end
 %     end
-% 	index_i= [ 3 7 ];
+%     index_i= [ 3 7 ];
 %     index_j= [ 4 4 ];
 %     for ii=1:length(index_i)
 %         i=index_i(ii);
@@ -280,25 +281,26 @@ else
 	
 	
 end
-	
+
 % create each bundle
 for i=1:max_row
     for j=1:max_col
         % keep track of the cell ID before creating the bundle
         cell_ID_bundle_start = cell_ID;
-        [cell_ID, surf_ID]  = create_bundle((i-0.5)*pitch_x, (j-0.5)*pitch_y, bundle_type{i,j},cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+        [cell_ID, surf_ID]  = create_bundle(x_bundle_center(i,j),y_bundle_center(i,j), bundle_type{i,j},...
+            cell_ID, surf_ID, file_handle_cell, file_handle_surf);
         % keep track of the cell ID AFTER creating the bundle
         cell_ID_bundle_end   = cell_ID;
         % finish water box around a given bundle
         % create the 4 planes (MCNP will delete redundant surfaces anyway)
         surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,(i-1)*pitch_x);
+        fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,(i-1)*Lx/9);
         surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,(i  )*pitch_x);
+        fprintf(file_handle_surf,'%5d  px %g \n',surf_ID,(i  )*Lx/9);
         surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,(j-1)*pitch_y);
+        fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,(j-1)*Ly/6);
         surf_ID = surf_ID +1;
-        fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,(j  )*pitch_y);
+        fprintf(file_handle_surf,'%5d  py %g \n',surf_ID,(j  )*Ly/6);
         % create the water cell for that bundle
         cell_ID=cell_ID+1; % increment cell ID
         fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d %d %d \n',cell_ID,water_mat_ID,water_density,...
@@ -335,16 +337,16 @@ end
 %    +-----------------5----------------+
 %
 % RPP a b c d zmin zmax
-a = 0*pitch_x;
-b = max_row*pitch_x;
-c = 0*pitch_y;
-d = max_col*pitch_y;
+a = 0;
+b = Lx;
+c = 0;
+d = Ly;
 surf_ID = surf_ID +1; 
 fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,a,b,c,d,z_min_cm,z_max_cm);
 % pool: cylinder
 surf_ID = surf_ID +1; 
 water_thickness = 111; %%% To be checked;
-pool_radius = Lx/2 + water_thickness;
+pool_radius = 137.16; %% hard coded and taken from AA0_Critical.inp Surf 9111
 fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,Lx/2,Ly/2,pool_radius );
 % cell outside of core, inside of pool
 cell_ID=cell_ID+1; % increment cell ID
