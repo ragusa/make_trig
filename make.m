@@ -280,12 +280,7 @@ else
 	
 	
 end
-
-% create the boundary of the core = to replace the surfaces 1 2 3 4 5 and 6
-  		surf_ID=surf_ID+1; % increment surface ID
-  		% write the box surface in file_handle_surf
-  		fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,0,Lx,0,Ly,-100,200);
-		
+	
 % create each bundle
 for i=1:max_row
     for j=1:max_col
