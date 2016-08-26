@@ -31,37 +31,37 @@ fprintf(file_handle_surf,'%5d  pz %g \n',2,z_max_cm);
 % fprintf(file_handle_surf,'%5d  py %g \n',5,0 -water_thickness_y);   coded at the end 
 % fprintf(file_handle_surf,'%5d  py %g \n',6,Ly+water_thickness_y);   of the make 
 % define plans pz =0 and intermediates plans pz to create pins
-%% pz for the shim safety rods or control rods
-fprintf(file_handle_surf,'%5d  pz %g \n',7,-75.56 );
-fprintf(file_handle_surf,'%5d  pz %g \n',8,-61.59 );
-fprintf(file_handle_surf,'%5d  pz %g \n',9,-59.05 );
-fprintf(file_handle_surf,'%5d  pz %g \n',10,-20.95); 
-fprintf(file_handle_surf,'%5d  pz %g \n',11,-20.31);  
-fprintf(file_handle_surf,'%5d  pz %g \n',12,-19.04); 
-fprintf(file_handle_surf,'%5d  pz %g \n',13,19.06);  
-fprintf(file_handle_surf,'%5d  pz %g \n',14,19.38);  
-fprintf(file_handle_surf,'%5d  pz %g \n',15,20.65);  
-fprintf(file_handle_surf,'%5d  pz %g \n',16,33.236); 
+%% pz for the shim safety rods
+fprintf(file_handle_surf,'%5d  pz %g \n',7,-75.56 +20.8); % 52% inserted 
+fprintf(file_handle_surf,'%5d  pz %g \n',8,-61.59 +20.8);
+fprintf(file_handle_surf,'%5d  pz %g \n',9,-59.05 +20.8);
+fprintf(file_handle_surf,'%5d  pz %g \n',10,-20.95+20.8); 
+fprintf(file_handle_surf,'%5d  pz %g \n',11,-20.31+20.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',12,-19.04+20.8); 
+fprintf(file_handle_surf,'%5d  pz %g \n',13,19.06 +20.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',14,19.38 +20.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',15,20.65 +20.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',16,33.236+20.8); 
 %% pz for the transient rod
-fprintf(file_handle_surf,'%5d  pz %g \n',17,-20.31); 
-fprintf(file_handle_surf,'%5d  pz %g \n',18,-19.04); 
-fprintf(file_handle_surf,'%5d  pz %g \n',19,19.06 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',20,19.38 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',21,20.65 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',22,33.236); 
-fprintf(file_handle_surf,'%5d  pz %g \n',49,-76.825);  
-fprintf(file_handle_surf,'%5d  pz %g \n',50,112.601); 
+fprintf(file_handle_surf,'%5d  pz %g \n',17,-20.31+40.0); 
+fprintf(file_handle_surf,'%5d  pz %g \n',18,-19.04+40.0); 
+fprintf(file_handle_surf,'%5d  pz %g \n',19,19.06 +40.0);  
+fprintf(file_handle_surf,'%5d  pz %g \n',20,19.38 +40.0);  
+fprintf(file_handle_surf,'%5d  pz %g \n',21,20.65 +40.0);  
+fprintf(file_handle_surf,'%5d  pz %g \n',22,33.236+40.0); % 100% inserted: PZ max matches with the top of the active core
+fprintf(file_handle_surf,'%5d  pz %g \n',49,-76.825+40.0);  
+fprintf(file_handle_surf,'%5d  pz %g \n',50,112.601+40.0); 
 %% pz for the regulating rod
-fprintf(file_handle_surf,'%5d  pz %g \n',23,19.06 ); 
-fprintf(file_handle_surf,'%5d  pz %g \n',24,19.38 ); 
-fprintf(file_handle_surf,'%5d  pz %g \n',25,20.65 );  
-fprintf(file_handle_surf,'%5d  pz %g \n',26,33.236);  
-fprintf(file_handle_surf,'%5d  pz %g \n',48,54.816);  
+fprintf(file_handle_surf,'%5d  pz %g \n',23,-19.06+19.8); % 49.6% inserted 
+fprintf(file_handle_surf,'%5d  pz %g \n',24,19.38 +19.8); 
+fprintf(file_handle_surf,'%5d  pz %g \n',25,20.65 +19.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',26,33.236+19.8);  
+fprintf(file_handle_surf,'%5d  pz %g \n',48,54.816+19.8);  
 %% pz for the regular fuel rods
 fprintf(file_handle_surf,'%5d  pz %g \n',27,-38.1);
 fprintf(file_handle_surf,'%5d  pz %g \n',28,-27.94);
-fprintf(file_handle_surf,'%5d  pz %g \n',29,-19.05);
-fprintf(file_handle_surf,'%5d  pz %g \n',30,19.05);
+fprintf(file_handle_surf,'%5d  pz %g \n',29,-19.04);
+fprintf(file_handle_surf,'%5d  pz %g \n',30,19.06);
 fprintf(file_handle_surf,'%5d  pz %g \n',31,27.94);
 fprintf(file_handle_surf,'%5d  pz %g \n',32,38.1);
 %% pz origin
@@ -83,7 +83,7 @@ fprintf(file_handle_surf,'%5d  pz %5g \n',46,-33.81);
 fprintf(file_handle_surf,'%5d  pz %5g \n',47,166.19);
 
 water_mat_ID = 5;
-water_density = -0.99799;
+water_density = -0.996025;
 
 % starting IDs for automatically generated ID's
 surf_ID = 50;
@@ -115,71 +115,65 @@ if debug_viz
 
 else
 	% fill bundle layout with regular fuel bundles
-    F='fuel_bundle';
     for i=1:max_row
         for j=1:max_col
             x_bundle_center(i,j) =  (i-1/2)*(Lx_bundle);
             y_bundle_center(i,j) =  (j-1/2)*(Ly_bundle);
-            bundle_type{i,j}=F;
+            bundle_type{i,j}='fuel_bundle';
         end
     end
     
-%     % % % put the bundles which are empty
-%     index_i= [ 2 2 ];
-%     index_j= [ 3 5 ];
-%     for ii=1:length(index_i)
-%         i=index_i(ii);
-%         for jj=1:length(index_j)
-%             j=index_j(jj);
-%             bundle_type{i,j}='empty_bundle';
-%         end
+%      % % % put the bundles which are empty
+%      index_i= [ 2 2 2 1 3 5 7 9 2 2 3 7 1 1 1 1 1 2 8 8 8 8 9 9 8 9 9 9 2 4 6 8];
+%      index_j= [ 3 4 5 1 1 1 1 1 3 5 4 4 3 4 5 6 2 2 2 4 5 6 2 6 3 3 4 5 1 1 1 1];
+%     if length(index_i)~=length(index_j)
+%     error('index i/j not of the same length');
 %     end
-%     index_i= [ 3 7 ];
-%     index_j= [ 4 4 ];
 %     for ii=1:length(index_i)
-%         i=index_i(ii);
-%         for jj=1:length(index_j)
-%             j=index_j(jj);
-%             bundle_type{i,j}='empty_bundle';
-%         end
-%     end
+%        i=index_i(ii);
+%        j=index_j(ii);
+%              bundle_type{i,j}='empty_bundle';
+%          end
+%      end
+
 	
-    % % % put shim_bundle
-    index_i= [ 4 4 6 6 ];
-    index_j= [ 3 5 3 5];
-	if length(index_i)~=length(index_j)
-	   error('index i/j not of the same length');
-	end
-    for ii=1:length(index_i)
-        i=index_i(ii);
-        j=index_j(ii);
-        bundle_type{i,j}='shim_bundle';
-    end
-	
-    % % % put water_regulating_bundle 
-    index_i= [ 3 ];
-    index_j= [ 6 ];
-	if length(index_i)~=length(index_j)
-	   error('index i/j not of the same length');
-	end
-    for ii=1:length(index_i)
-        i=index_i(ii);
-        j=index_j(ii);
-        bundle_type{i,j}='water_regulating_bundle';
-    end
-	
-    % % % put transient_bundle
-    index_i= [ 5 ];
-    index_j= [ 4 ];
-	if length(index_i)~=length(index_j)
-	   error('index i/j not of the same length');
-	end
-    for ii=1:length(index_i)
-        i=index_i(ii);
-        j=index_j(ii);
-        bundle_type{i,j}='transient_bundle';
-    end
-    % % % put water_holes
+   % % % put shim_bundle
+   index_i= [ 4 4 6 6];
+   index_j= [ 3 5 3 5];
+  if length(index_i)~=length(index_j)
+    error('index i/j not of the same length');
+  end
+   for ii=1:length(index_i)
+       i=index_i(ii);
+       j=index_j(ii);
+       bundle_type{i,j}='shim_bundle';
+   end
+ 
+   % % % put water_regulating_bundle 
+   index_i= [ 3 ];
+   index_j= [ 6 ];
+  if length(index_i)~=length(index_j)
+    error('index i/j not of the same length');
+  end
+   for ii=1:length(index_i)
+       i=index_i(ii);
+       j=index_j(ii);
+       bundle_type{i,j}='water_regulating_bundle';
+   end
+ 
+   % % % put transient_bundle
+   index_i= [ 5 ];
+   index_j= [ 4 ];
+  if length(index_i)~=length(index_j)
+    error('index i/j not of the same length'); 
+  end 
+   for ii=1:length(index_i)
+       i=index_i(ii);
+       j=index_j(ii);
+       bundle_type{i,j}='transient_bundle';
+   end
+ 
+ % % % put water_holes
     index_i= [ 1 3 5 7 9 2 2 3 7];
     index_j= [ 1 1 1 1 1 3 5 4 4];
 	if length(index_i)~=length(index_j)
@@ -264,22 +258,22 @@ else
         j=index_j(ii);
         bundle_type{i,j}='A-raw_long_tube';
     end
-	
-	% % % put half fuel bundles
-    index_i= [ 4 6 ];
-    index_j= [ 2 2 ];
-	if length(index_i)~=length(index_j)
-	   error('index i/j not of the same length');
-	end
-    for ii=1:length(index_i)
-        i=index_i(ii);
-        j=index_j(ii);
-        bundle_type{i,j}='half_bundle';
-    end
-	
-
-	
-	
+% 	
+ 	% % % put half fuel bundles
+     index_i= [ 4 6 ];
+     index_j= [ 2 2 ];
+ 	if length(index_i)~=length(index_j)
+ 	   error('index i/j not of the same length');
+ 	end
+     for ii=1:length(index_i)
+         i=index_i(ii);
+         j=index_j(ii);
+         bundle_type{i,j}='half_bundle';
+     end
+ 	
+ 
+ 	
+ 	
 end
 
 % create each bundle

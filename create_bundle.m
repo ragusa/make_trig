@@ -1,5 +1,3 @@
-
-
 function [cell_ID, surf_ID]  = create_bundle(x_bundle_center, y_bundle_center, bundle_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
 
 % distances from bundle center to pin centers
@@ -66,20 +64,20 @@ switch bundle_type
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
 
         
-        pin_type='fuel_control_rod';
-        % south west: pin 4
-        x_center = x_bundle_center - pitch_x;
-        y_center = y_bundle_center - pitch_y;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);        
+       pin_type='fuel_control_rod';
+       % south west: pin 4
+       x_center = x_bundle_center - pitch_x;
+       y_center = y_bundle_center - pitch_y;
+       [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);        
 		
         
     case 'water_regulating_bundle'
         
-        pin_type='regulating_rod';
-        % south east: pin 3
-        x_center = x_bundle_center + pitch_x;
-        y_center = y_bundle_center - pitch_y;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);   
+       pin_type='regulating_rod';
+       % south east: pin 3
+       x_center = x_bundle_center + pitch_x;
+       y_center = y_bundle_center - pitch_y;
+       [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);   
          
         pin_type='regular_fuel_rod';
         % south west: pin 4
@@ -116,12 +114,12 @@ switch bundle_type
         y_center = y_bundle_center - pitch_y;
         [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
 		
-        pin_type='transient_rod';
-        % south west: pin 4
-        x_center = x_bundle_center - pitch_x;
-        y_center = y_bundle_center - pitch_y;
-        [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
-   
+      pin_type='transient_rod';
+      % south west: pin 4
+      x_center = x_bundle_center - pitch_x;
+      y_center = y_bundle_center - pitch_y;
+      [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
+     
     case 'half_bundle'
         
         pin_type='regular_fuel_rod';
@@ -189,7 +187,7 @@ switch bundle_type
           [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);
           
      case 'detector_block'
-          pin_type='detector2';
+          pin_type='detector1';
           x_center = x_bundle_center;
           y_center = y_bundle_center;
           [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf);

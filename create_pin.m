@@ -1,3 +1,4 @@
+
 function [cell_ID, surf_ID]  = create_pin(x_center, y_center, pin_type, cell_ID, surf_ID, file_handle_cell, file_handle_surf)
 
 
@@ -19,7 +20,7 @@ zr_rod_density         = -6.51; % in g/cc or 0.01296
 fuel_meat_density      = 8.71115E-02; % atom density for fresh fuel according to Barnfire files
 SS_density             = -8.0; % atom density for fresh fuel according to Barnfire files
 graphite_density       = -1.7; % in g/cc or 8.5210E-2
-water_density          = -0.99799; % light water in g/cc
+water_density          = -0.996025; % light water in g/cc
 air_density            = -1.0-5;
 alu_density            = -2.7; % strucural aluminium 6061 = 2.7 g/cc
 detector_density       = water_density; % water_density
@@ -30,8 +31,8 @@ can_density            = air_density;
 boron_carbide_density  = -0.135143;
 % radii
 radius_zr_rod            = 0.3175;
-radius_fuel_meat         = 1.7412;
-radius_clad              = 1.7919; % radius_clad = radius_graphite
+radius_fuel_meat         = 1.74115;
+radius_clad              = 1.79195; % radius_clad = radius_graphite
 radius_water_hole        = 3.05;   % the water hole is defined upon the gridplate, and with the macrobody RCC instead of TRC since TRC is not programmed in the converter MCNP2PDT
 radius_detector          = 3.175;
 radius_inner_source      = 1.580;
@@ -128,17 +129,17 @@ switch pin_type
         fprintf(file_handle_surf,'%5d  c/z %g %g %g \n',surf_ID,x_center,y_center,radius_clad);
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d  imp:n=1\n',cell_ID,SS_mat_ID,SS_density,-surf_ID,surf_ID-1,z_2_fuel,-z_3_fuel);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d %d  imp:n=1\n',cell_ID,SS_mat_ID,SS_density,-surf_ID,surf_ID-1,z_1_fuel,-z_4_fuel);
         
         %graphite extremities
         %lower part, use same surfID as cladding cylinder
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1\n',cell_ID,graphite_mat_ID,graphite_density,-(surf_ID),z_1_fuel,-z_2_fuel);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1\n',cell_ID,graphite_mat_ID,graphite_density,-(surf_ID-1),z_1_fuel,-z_2_fuel);
         %upper part
         cell_ID=cell_ID+1; % increment cell ID
         % write new cell in file_handle_cell
-        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1\n',cell_ID,graphite_mat_ID,graphite_density,-(surf_ID),z_3_fuel,-z_4_fuel);
+        fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1\n',cell_ID,graphite_mat_ID,graphite_density,-(surf_ID-1),z_3_fuel,-z_4_fuel);
         
 		%Aluminium extremities
         %upper rod, use same surfID as cladding cylinder
@@ -346,13 +347,13 @@ switch pin_type
      
         
     case 'detector1'
-		% % graphite
-		% surf_ID=surf_ID+1; % increment surfqce ID
-		% % write new box surface in file_handle_surf
-		% fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-3.495,x_center-1.31,y_center-3.495,y_center+3.495,-33.135,67.835);
-		% cell_ID=cell_ID+1; % increment cell ID% 
-		% % write a new cell in file_handle_cell with graphite inside
-		% fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,graphite_mat_ID,graphite_density,-surf_ID,z_1_detector,-z_2_detector);
+		% graphite
+		surf_ID=surf_ID+1; % increment surfqce ID
+		% write new box surface in file_handle_surf
+		fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-3.495,x_center-1.31,y_center-3.495,y_center+3.495,-33.135,67.835);
+		cell_ID=cell_ID+1; % increment cell ID% 
+		% write a new cell in file_handle_cell with graphite inside
+		fprintf(file_handle_cell,'%5d  %d %g %d %d %d imp:n=1 \n',cell_ID,graphite_mat_ID,graphite_density,-surf_ID,z_1_detector,-z_2_detector);
 		% water
 		surf_ID=surf_ID+1; % increment surface ID
 		% write a new box surface in file_handle_surf
@@ -367,7 +368,7 @@ switch pin_type
 		fprintf(file_handle_surf,'%5d  rpp %g %g %g %g %g %g \n',surf_ID,x_center-3.81,x_center+3.81,y_center-3.81,y_center+3.81,-33.135,68.15);
 		cell_ID=cell_ID+1; % increment cell ID% 
 		% write a new cell in file_handle_cell with clad inside 
-		fprintf(file_handle_cell,'%5d  %d %g %d  %d %d %d %d imp:n=1 \n',cell_ID,clad_mat_ID,clad_density,-surf_ID,surf_ID-1,surf_ID-2,z_1_detector,-z_3_detector);
+		fprintf(file_handle_cell,'%5d  %d %g %d  %d %d %d %d imp:n=1 \n',cell_ID,SS_mat_ID,SS_density,-surf_ID,surf_ID-1,surf_ID-2,z_1_detector,-z_3_detector);
 	
 	case 'detector2'
         surf_ID=surf_ID+1; % increment surface ID
