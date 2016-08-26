@@ -358,9 +358,17 @@ fprintf(file_handle_cell,'%5d  %d %d:%d:%d imp:n=0 \n',cell_ID,0,-1,2,surf_ID);
 
 
 fprintf(file_handle_cell,'\n');
-fprintf(file_handle_surf,'\n');
+fprintf(file_handle_surf);
 fclose(file_handle_cell);
 fclose(file_handle_surf);
 
 % system('copy cell.txt+surf.txt+data.txt input.inp');
-system('copy cell.txt+surf.txt+data.txt+data_RT.txt input.inp');
+if ispc
+    system('copy cell.txt+surf.txt+data.txt+data_RT.txt input.inp');
+end
+if ismac
+    system('touch input.inp');
+    system('cat cell.txt >> input.inp');
+    system('cat surf.txt >> input.inp');
+    system('cat data_RT.txt >> input.inp');
+end
